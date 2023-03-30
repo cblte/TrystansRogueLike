@@ -6,8 +6,8 @@ The Tutorial can be found here <https://trystans.blogspot.com/2016/01/roguelike-
 
 ## Chapters
 
-* 01 Java, Eclipse, AsciiPanel, application
-* 02 input, output, modes, and screens
+* 01 Java, Eclipse, AsciiPanel, application - **done**
+* 02 input, output, modes, and screens - **done**
 * 03 scrolling through random caves
 * 04 the player
 * 05 stationary monsters
