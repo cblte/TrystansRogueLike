@@ -5,6 +5,8 @@
 package net.zn80.trystansroguelike.screens;
 
 import net.trystan.asciipanel.AsciiPanel;
+import net.zn80.trystansroguelike.Creature;
+import net.zn80.trystansroguelike.CreatureFactory;
 import net.zn80.trystansroguelike.World;
 import net.zn80.trystansroguelike.WorldBuilder;
 
@@ -18,11 +20,14 @@ public class PlayScreen implements Screen {
     private World world;
     private int centerX;
     private int centerY;
+    private Creature player;
 
     public PlayScreen() {
         this.screenWidth = 80;
         this.screenHeight = 21;
         createWorld();
+        CreatureFactory creatureFactory = new CreatureFactory(world);
+        player = creatureFactory.newPlayer();
     }
 
     private void createWorld() {
@@ -40,9 +45,8 @@ public class PlayScreen implements Screen {
 
         displayTiles(terminal, left, top);
 
-        terminal.write('X', centerX - left, centerY - top);
+        terminal.write(player.getGlyph(), player.getX() - left, player.getY() - top, player.getColor());
 
-        terminal.write("Let's a game:", 1, 1);
         terminal.writeCenter("PlayScreen", terminal.getHeightInCharacters() / 2);
         terminal.writeCenter("--- press [escape] to loose or [enter] to continue ---", terminal.getHeightInCharacters() - 2);
     }
@@ -56,7 +60,7 @@ public class PlayScreen implements Screen {
      * @return The horizontal scroll position of the viewport.
      */
     public int getScrollX() {
-        return Math.max(0, Math.min(centerX - screenWidth / 2, world.getWidth() - screenWidth));
+        return Math.max(0, Math.min(player.getX() - screenWidth / 2, world.getWidth() - screenWidth));
     }
 
     /**
@@ -68,7 +72,7 @@ public class PlayScreen implements Screen {
      * @return The vertical scroll position of the viewport.
      */
     public int getScrollY() {
-        return Math.max(0, Math.min(centerY - screenHeight / 2, world.getHeight() - screenHeight));
+        return Math.max(0, Math.min(player.getY() - screenHeight / 2, world.getHeight() - screenHeight));
     }
 
     /**
@@ -106,45 +110,34 @@ public class PlayScreen implements Screen {
                 return new WinScreen();
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_H:
-                scrollBy(-1, 0);
+                player.moveBy(-1, 0);
                 break;
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_L:
-                scrollBy(1, 0);
+                player.moveBy(1, 0);
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_K:
-                scrollBy(0, -1);
+                player.moveBy(0, -1);
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_J:
-                scrollBy(0, 1);
+                player.moveBy(0, 1);
                 break;
             case KeyEvent.VK_Y:
-                scrollBy(-1, -1);
+                player.moveBy(-1, -1);
                 break;
             case KeyEvent.VK_U:
-                scrollBy(1, -1);
+                player.moveBy(1, -1);
                 break;
             case KeyEvent.VK_B:
-                scrollBy(-1, 1);
+                player.moveBy(-1, 1);
                 break;
             case KeyEvent.VK_N:
-                scrollBy(1, 1);
+                player.moveBy(1, 1);
                 break;
         }
 
         return this;
-    }
-
-    /**
-     * Scrolls the screen by a given amount along the x and y axes.
-     *
-     * @param mx the amount to scroll along the x-axis
-     * @param my the amount to scroll along the y-axis
-     */
-    private void scrollBy(int mx, int my) {
-        centerX = Math.min(Math.max(centerX + mx, 0), world.getWidth() - 1);
-        centerY = Math.min(Math.max(centerY + my, 0), world.getHeight() - 1);
     }
 }

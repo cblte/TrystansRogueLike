@@ -7,7 +7,7 @@ public class PlayerAi extends CreatureAi {
 
     @Override
     public void OnEnter(int x, int y, Tile tile) {
-        if (tile.isWalkable()) {
+        if (tile.isGround()) {
             creature.setX(x);
             creature.setY(y);
         } else if (tile.isDiggable()) {

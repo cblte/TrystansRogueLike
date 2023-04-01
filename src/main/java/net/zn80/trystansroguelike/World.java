@@ -6,6 +6,7 @@
 package net.zn80.trystansroguelike;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class World {
 
@@ -92,7 +93,50 @@ public class World {
     public void dig(int x, int y) {
         Tile tile = getTile(x, y);
         if (tile.isDiggable()) {
-            tiles[x][y] = Tile.WALL;
+            tiles[x][y] = Tile.FLOOR;
         }
     }
+
+    public void addAtEmptyLocation(Creature creature) {
+        int x;
+        int y;
+
+        do {
+            x = (int) (Math.random() * width);
+            y = (int) (Math.random() * height);
+        } while (!getTile(x, y).isGround());
+
+        creature.setX(x);
+        creature.setY(y);
+    }
+
+    /**
+     * Adds a given creature to an empty location on the map. If no empty locations are found, throws a
+     * RuntimeException.
+     *
+     * @param creature the creature to add
+     */
+    public void addAtEmptyLocationOptimized(Creature creature) {
+        // Find all empty locations on the map
+        ArrayList<Point> emptyLocations = new ArrayList<Point>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                // Check if tile is ground and no creature occupies it
+                if (getTile(x, y).isGround()) {
+                    emptyLocations.add(new Point(x, y));
+                }
+            }
+        }
+
+        // Throw an exception if no empty locations are found
+        if (emptyLocations.isEmpty()) {
+            throw new RuntimeException("No empty locations.");
+        }
+
+        // Choose a random empty location and add the creature there
+        Point p = emptyLocations.get((int) (Math.random() * emptyLocations.size()));
+        creature.setX(p.x);
+        creature.setY(p.y);
+    }
+
 }

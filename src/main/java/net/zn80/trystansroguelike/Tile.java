@@ -34,7 +34,7 @@ public enum Tile {
      * @return true if this tile is a wall and can be dug out, false otherwise
      */
     public boolean isDiggable() {
-        return this.isDiggable;
+        return this == Tile.WALL;
     }
 
     public boolean isGround() {
