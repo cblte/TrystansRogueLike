@@ -13,19 +13,35 @@ public enum Tile {
     WALL((char) 177, AsciiPanel.yellow),
     BOUNDS('x', AsciiPanel.brightBlack);
 
-    private final char glyph;
-    private final Color color;
+    private Color color;
+    private char glyph;
+    private boolean isDiggable;
+
 
     Tile(char glyph, Color color) {
         this.glyph = glyph;
         this.color = color;
-    }
 
-    public char getGlyph() {
-        return glyph;
     }
 
     public Color getColor() {
         return color;
+    }
+
+    /**
+     * Returns whether this tile can be dug out or not.
+     *
+     * @return true if this tile is a wall and can be dug out, false otherwise
+     */
+    public boolean isDiggable() {
+        return this == Tile.WALL;
+    }
+
+    public boolean isGround() {
+        return this != WALL && this != BOUNDS;
+    }
+
+    public char getGlyph() {
+        return glyph;
     }
 }
