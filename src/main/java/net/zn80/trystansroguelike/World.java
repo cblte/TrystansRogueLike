@@ -83,5 +83,16 @@ public class World {
         return height;
     }
 
-
+    /**
+     * Digs out the tile at the given coordinates, replacing it with a floor tile if the tile is diggable.
+     *
+     * @param x the x-coordinate of the tile to dig
+     * @param y the y-coordinate of the tile to dig
+     */
+    public void dig(int x, int y) {
+        Tile tile = getTile(x, y);
+        if (tile.isDiggable()) {
+            tiles[x][y] = Tile.WALL;
+        }
+    }
 }
