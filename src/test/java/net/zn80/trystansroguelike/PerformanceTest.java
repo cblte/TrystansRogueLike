@@ -5,8 +5,6 @@ import net.trystan.asciipanel.AsciiPanel;
 
 public class PerformanceTest {
 
-    int screenWidth = 100;
-    int screenHeight = 100;
     private World world;
 
     public PerformanceTest() {
@@ -23,14 +21,14 @@ public class PerformanceTest {
 
         long start2 = System.nanoTime();
         for (int i = 0; i < n; i++) {
-            world.addAtEmptyLocationOptimized(new Creature(world, '@', AsciiPanel.brightWhite));
+            //world.addAtEmptyLocationOptimized(new Creature(world, '@', AsciiPanel.brightWhite));
         }
         long end2 = System.nanoTime();
         System.out.println("addAtEmptyLocationOptimized method took " + (end2 - start2) / 1000000.0 + " ms");
     }
 
     private void createWorld() {
-        this.world = new WorldBuilder(50, 50).makeCaves().build();
+        this.world = new WorldBuilder(100, 100).makeCaves().build();
     }
 
     public static void main(String[] args) {
