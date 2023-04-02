@@ -36,18 +36,6 @@ public class ApplicationMain extends JFrame implements KeyListener {
     }
 
     /**
-     * Main method that creates an instance of the ApplicationMain class and sets the window to be visible.
-     *
-     * @param args command line arguments
-     */
-    public static void main(String[] args) {
-        ApplicationMain applicationMain = new ApplicationMain();
-        applicationMain.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        applicationMain.setLocationRelativeTo(null); // center the window
-        applicationMain.setVisible(true);
-    }
-
-    /**
      * Clears the AsciiPanel and displays the output of the current screen on the terminal. This method is responsible
      * for refreshing the contents of the game window and updating it to reflect the current game state. First, it
      * clears the AsciiPanel using the clear() method. Then, it calls the displayOutput() method of the current screen
@@ -60,14 +48,26 @@ public class ApplicationMain extends JFrame implements KeyListener {
         super.repaint();
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        screen = screen.respondToUserInput(e);
-        repaint();
+    /**
+     * Main method that creates an instance of the ApplicationMain class and sets the window to be visible.
+     *
+     * @param args command line arguments
+     */
+    public static void main(String[] args) {
+        ApplicationMain applicationMain = new ApplicationMain();
+        applicationMain.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        applicationMain.setLocationRelativeTo(null); // center the window
+        applicationMain.setVisible(true);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        screen = screen.respondToUserInput(e);
+        repaint();
     }
 
     @Override
