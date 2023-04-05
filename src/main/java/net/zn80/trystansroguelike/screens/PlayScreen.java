@@ -10,11 +10,9 @@ import net.zn80.trystansroguelike.CreatureFactory;
 import net.zn80.trystansroguelike.World;
 import net.zn80.trystansroguelike.WorldBuilder;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class PlayScreen implements Screen {
-
     private final int screenWidth;
     private final int screenHeight;
     private World world;
@@ -49,7 +47,6 @@ public class PlayScreen implements Screen {
 
         terminal.write(player.getGlyph(), player.getX() - left, player.getY() - top, player.getColor());
 
-        terminal.writeCenter("PlayScreen", terminal.getHeightInCharacters() / 2);
         terminal.writeCenter("--- press [escape] to loose or [enter] to continue ---", terminal.getHeightInCharacters() - 2);
     }
 
@@ -93,9 +90,14 @@ public class PlayScreen implements Screen {
             int wy = y + top;
             for (int x = 0; x < screenWidth; x++) {
                 int wx = x + left;
-                Color color = world.getColor(wx, wy);
-                char glyph = world.getGlyph(wx, wy);
-                terminal.write(glyph, x, y, color);
+                terminal.write(world.getGlyph(wx, wy), x, y, world.getColor(wx, wy));
+            }
+        }
+        // draw creatures after the tiles
+        for (Creature creature : world.getCreatures()) {
+            if (creature.getX() >= left && creature.getX() < left + screenWidth
+                    && creature.getY() >= top && creature.getY() < top + screenHeight) {
+                terminal.write(creature.getGlyph(), creature.getX() - left, creature.getY() - top, creature.getColor());
             }
         }
     }

@@ -137,4 +137,14 @@ public class World {
         }
         return null;
     }
+
+    /**
+     * Returns the list of creatures that belong to the world.
+     *
+     * @return the list of creatures in the world
+     */
+    public List<Creature> getCreatures() {
+        return creatures;
+    }
+
 }
