@@ -115,6 +115,30 @@ public class Creature {
         world.dig(wx, wy);
     }
 
+    /**
+     * This method instructs the creature to take its turn by calling the onTakeTurn() method of its AI.
+     */
+    public void takeTurn() {
+        ai.onTakeTurn();
+    }
+
+    /**
+     * Checks whether this creature can enter the given coordinates on the world map. A creature can enter a tile if it
+     * is a ground tile and either there is no other creature occupying the tile, or the only other creature occupying
+     * the tile is this creature itself.
+     *
+     * @param wx the x-coordinate of the tile to check
+     * @param wy the y-coordinate of the tile to check
+     * @return true if the creature can enter the tile, false otherwise
+     */
+    public boolean canEnter(int wx, int wy) {
+        Tile tile = world.getTile(wx, wy);
+        if (tile == null || !tile.isGround()) {
+            return false;
+        }
+        Creature other = world.getCreature(wx, wy);
+        return (other == null || other == this);
+    }
 }
 
 

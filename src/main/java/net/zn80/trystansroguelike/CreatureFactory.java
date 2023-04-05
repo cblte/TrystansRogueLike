@@ -17,10 +17,16 @@ public class CreatureFactory {
     }
 
     public Creature newFungus() {
-        Creature fungus = new Creature(world, 'f', AsciiPanel.green);
+        Creature fungus = new Creature(world, 'F', AsciiPanel.green);
         world.addAtEmptyLocation(fungus);
-        new FungusAi(fungus);
+        new FungusAi(fungus, this);
         return fungus;
     }
 
+    public Creature newFungusChild() {
+        Creature fungusChild = new Creature(world, 'f', AsciiPanel.green);
+        world.addAtEmptyLocation(fungusChild);
+        new FungusAi(fungusChild, this);
+        return fungusChild;
+    }
 }

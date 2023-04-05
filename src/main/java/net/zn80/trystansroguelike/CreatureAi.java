@@ -10,4 +10,7 @@ public class CreatureAi {
 
     public void OnEnter(int i, int i1, Tile tile) {
     }
+
+    public void onTakeTurn() {
+    }
 }

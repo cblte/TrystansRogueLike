@@ -16,8 +16,6 @@ public class PlayScreen implements Screen {
     private final int screenWidth;
     private final int screenHeight;
     private World world;
-    private int centerX;
-    private int centerY;
     private Creature player;
 
     public PlayScreen() {
@@ -157,6 +155,8 @@ public class PlayScreen implements Screen {
                 break;
         }
 
+        // after handling player input, update all creatures in the world
+        world.updateCreatures();
         return this;
     }
 }
