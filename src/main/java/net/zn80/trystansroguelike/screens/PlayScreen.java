@@ -100,7 +100,6 @@ public class PlayScreen implements Screen {
      * @param left     the x-coordinate of the left edge of the viewport, in world coordinates.
      * @param top      the y-coordinate of the top edge of the viewport, in world coordinates.
      */
-
     private void displayTiles(AsciiPanel terminal, int left, int top) {
         for (int y = 0; y < screenHeight; y++) {
             int wy = y + top;

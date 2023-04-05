@@ -4,11 +4,11 @@ import java.awt.*;
 
 public class Creature {
 
+    private final World world;
+    private final char glyph;
+    private final Color color;
     private int x;
     private int y;
-    private World world;
-    private char glyph;
-    private Color color;
     private CreatureAi ai;
 
     /**
@@ -24,8 +24,33 @@ public class Creature {
         this.color = color;
     }
 
+    /**
+     * Moves the player by the specified x and y distance, attacking any creature at the new location. If there is no
+     * creature at the new location, the player's AI's OnEnter method is called.
+     *
+     * @param mx the distance to move the player in the x direction
+     * @param my the distance to move the player in the y direction
+     */
     public void moveBy(int mx, int my) {
-        ai.OnEnter(x + mx, y + my, world.getTile(x + mx, y + my));
+        // Check if there is a creature at the new location
+        Creature other = world.creature(x + mx, y + my);
+        if (other == null) {
+            // If there is no creature, call the OnEnter method of the creature's (player's) AI with the new location
+            ai.OnEnter(x + mx, y + my, world.getTile(x + mx, y + my));
+        } else {
+            // If there is a creature, attack it
+            attack(other);
+        }
+    }
+
+
+    /**
+     * Attacks the specified creature, removing it from the world.
+     *
+     * @param other the creature to attack and remove
+     */
+    public void attack(Creature other) {
+        world.remove(other);
     }
 
     /**

@@ -148,4 +148,13 @@ public class World {
         return creatures;
     }
 
+    /**
+     * Removes the specified creature from the world.
+     *
+     * @param other the creature to remove
+     */
+    public void remove(Creature other) {
+        creatures.remove(other);
+    }
+
 }
