@@ -113,7 +113,7 @@ public class World {
         for (int i = 0; i < 1000; i++) {
             x = (int) (Math.random() * width);
             y = (int) (Math.random() * height);
-            if (getTile(x, y).isGround() && creature(x, y) == null) {
+            if (getTile(x, y).isGround() && getCreature(x, y) == null) {
                 creature.setX(x);
                 creature.setY(y);
                 creatures.add(creature);
@@ -130,7 +130,7 @@ public class World {
      * @param y The Y coordinate of the creature.
      * @return The creature at the specified coordinates, or null if there is no such creature.
      */
-    public Creature creature(int x, int y) {
+    public Creature getCreature(int x, int y) {
         for (Creature c : creatures) {
             if (c.getX() == x && c.getY() == y) {
                 return c;
@@ -155,6 +155,16 @@ public class World {
      */
     public void remove(Creature other) {
         creatures.remove(other);
+    }
+
+    /**
+     * Tells each creature in the world to take a turn.
+     */
+    public void updateCreatures() {
+        List<Creature> creaturesToUpdate = new ArrayList<Creature>(creatures);
+        for (Creature creature : creaturesToUpdate) {
+            creature.takeTurn();
+        }
     }
 
 }

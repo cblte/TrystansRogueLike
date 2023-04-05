@@ -33,7 +33,7 @@ public class Creature {
      */
     public void moveBy(int mx, int my) {
         // Check if there is a creature at the new location
-        Creature other = world.creature(x + mx, y + my);
+        Creature other = world.getCreature(x + mx, y + my);
         if (other == null) {
             // If there is no creature, call the OnEnter method of the creature's (player's) AI with the new location
             ai.OnEnter(x + mx, y + my, world.getTile(x + mx, y + my));
