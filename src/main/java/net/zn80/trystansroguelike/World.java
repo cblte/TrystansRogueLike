@@ -116,6 +116,7 @@ public class World {
             if (getTile(x, y).isGround() && creature(x, y) == null) {
                 creature.setX(x);
                 creature.setY(y);
+                creatures.add(creature);
                 return;
             }
         }
