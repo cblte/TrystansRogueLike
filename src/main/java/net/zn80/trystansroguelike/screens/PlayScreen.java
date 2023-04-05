@@ -24,14 +24,30 @@ public class PlayScreen implements Screen {
         this.screenWidth = 80;
         this.screenHeight = 21;
         createWorld();
+
         CreatureFactory creatureFactory = new CreatureFactory(world);
-        player = creatureFactory.newPlayer();
+        createCreatures(creatureFactory);
     }
 
+    /**
+     * Creates a new world with a size of 90x31 and generates caves.
+     */
     private void createWorld() {
         this.world = new WorldBuilder(90, 31).makeCaves().build();
+    }
 
+    /**
+     * Creates a player and 8 fungus creatures using the specified creature factory.
+     *
+     * @param creatureFactory The creature factory to use for creating the creatures.
+     */
+    private void createCreatures(CreatureFactory creatureFactory) {
+        player = creatureFactory.newPlayer();
 
+        for (int i = 0; i < 8; i++) {
+            Creature f = creatureFactory.newFungus();
+            System.out.println("Fungus added: " + f.getX() + "/" + f.getY());
+        }
     }
 
     @Override
