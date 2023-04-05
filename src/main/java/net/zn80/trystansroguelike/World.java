@@ -101,21 +101,25 @@ public class World {
     }
 
     /**
-     * Adds a given creature to an empty location on the world map.
+     * Adds the given creature to a random empty location on the world map.
      *
-     * @param creature the creature to be added to the world map
-     * @throws RuntimeException if no empty location is found
+     * @param creature The creature to be added to the world map.
+     * @throws RuntimeException if no empty location is found after 1000 attempts.
      */
     public void addAtEmptyLocation(Creature creature) {
         int x;
         int y;
-        // keep generating random coordinates until an empty location is found
-        do {
+        // Keep generating random coordinates until an empty location is found
+        for (int i = 0; i < 1000; i++) {
             x = (int) (Math.random() * width);
             y = (int) (Math.random() * height);
-        } while (!getTile(x, y).isGround() || creature(x, y) != null);
-        creature.setX(x);
-        creature.setY(y);
+            if (getTile(x, y).isGround() && creature(x, y) == null) {
+                creature.setX(x);
+                creature.setY(y);
+                return;
+            }
+        }
+        throw new RuntimeException("Could not find an empty location to add the creature.");
     }
 
     /**
