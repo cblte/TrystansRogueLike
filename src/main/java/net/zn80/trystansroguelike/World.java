@@ -6,12 +6,15 @@
 package net.zn80.trystansroguelike;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class World {
 
     private final Tile[][] tiles;
     private final int width;
     private final int height;
+    private List<Creature> creatures;
 
     /**
      * Constructs a new World object with the specified array of Tile objects.
@@ -24,6 +27,7 @@ public class World {
         this.tiles = tiles;
         this.width = tiles.length;
         this.height = tiles[0].length;
+        creatures = new ArrayList<>();
     }
 
     /**
@@ -109,8 +113,24 @@ public class World {
         do {
             x = (int) (Math.random() * width);
             y = (int) (Math.random() * height);
-        } while (!getTile(x, y).isGround());
+        } while (!getTile(x, y).isGround() || creature(x, y) != null);
         creature.setX(x);
         creature.setY(y);
+    }
+
+    /**
+     * Returns the creature at the specified coordinates.
+     *
+     * @param x The X coordinate of the creature.
+     * @param y The Y coordinate of the creature.
+     * @return The creature at the specified coordinates, or null if there is no such creature.
+     */
+    public Creature creature(int x, int y) {
+        for (Creature c : creatures) {
+            if (c.getX() == x && c.getY() == y) {
+                return c;
+            }
+        }
+        return null;
     }
 }
