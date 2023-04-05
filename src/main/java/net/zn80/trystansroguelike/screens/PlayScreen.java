@@ -46,7 +46,7 @@ public class PlayScreen implements Screen {
 
         for (int i = 0; i < 8; i++) {
             Creature f = creatureFactory.newFungus();
-            System.out.println("Fungus added: " + f.getX() + "/" + f.getY());
+            System.out.format("Creature %c added at %d/%d%n", f.getGlyph(), f.getX(), f.getY());
         }
     }
 
