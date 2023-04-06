@@ -36,7 +36,7 @@ public class FungusAi extends CreatureAi {
         }
 
         // Create a new fungus creature at the selected location
-        Creature child = factory.newFungusChild();
+        Creature child = factory.newFungus();
         child.setX(x);
         child.setY(y);
         spreadCount++;

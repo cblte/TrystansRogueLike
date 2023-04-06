@@ -24,11 +24,4 @@ public class CreatureFactory {
         new FungusAi(fungus, this);
         return fungus;
     }
-
-    public Creature newFungusChild() {
-        Creature fungusChild = new Creature(world, 'f', AsciiPanel.green, 5, 0, 0);
-        world.addAtEmptyLocation(fungusChild);
-        new FungusAi(fungusChild, this);
-        return fungusChild;
-    }
 }
