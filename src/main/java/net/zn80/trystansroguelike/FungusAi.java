@@ -40,5 +40,6 @@ public class FungusAi extends CreatureAi {
         child.setX(x);
         child.setY(y);
         spreadCount++;
+        creature.doAction("spawn a child");
     }
 }

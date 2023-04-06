@@ -25,6 +25,7 @@ public class PlayScreen implements Screen {
         this.screenWidth = 80;
         this.screenHeight = 21;
         this.messages = new ArrayList<String>();
+
         createWorld();
 
         CreatureFactory creatureFactory = new CreatureFactory(world);
@@ -53,22 +54,36 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * Displays the game output on the specified AsciiPanel terminal. This method first calculates the left and top
+     * offsets of the viewport by calling the getScrollX and getScrollY methods, respectively. It then passes these
+     * values to the displayTiles method to show the appropriate section of the world. Next, it calls the
+     * displayMessages method to show any messages that have been generated since the last call to displayOutput.
+     * Finally, it displays the player character at its current position and shows the player's health status at the
+     * bottom of the screen.
+     *
+     * @param terminal the AsciiPanel on which to display the game output
+     */
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        // Here, we first calculate the left and top offsets of the viewport by calling the getScrollX and getScrollY
-        // methods, respectively. We then pass these values to the displayTiles method to show the appropriate section
-        // of the world. Finally, we add some text to the top and bottom of the screen to provide instructions to the
-        // player.
+        // Calculate the left and top offsets of the viewport
         int left = getScrollX();
         int top = getScrollY();
 
+        // Display the appropriate section of the world
         displayTiles(terminal, left, top);
 
+        // Display any messages that have been generated
+        displayMessages(terminal, messages);
+
+        // Display the player character at its current position
         terminal.write(player.getGlyph(), player.getX() - left, player.getY() - top, player.getColor());
 
+        // Show the player's health status at the bottom of the screen
         String stats = String.format(" %3d/%3d hp", player.getHp(), player.getMaxHp());
         terminal.write(stats, 1, 23);
     }
+
 
     /**
      * Calculates the horizontal scroll position of the viewport based on the center point and screen size. Ensures that
@@ -114,11 +129,26 @@ public class PlayScreen implements Screen {
         }
         // draw creatures after the tiles
         for (Creature creature : world.getCreatures()) {
-            if (creature.getX() >= left && creature.getX() < left + screenWidth
-                    && creature.getY() >= top && creature.getY() < top + screenHeight) {
+            if (creature.getX() >= left && creature.getX() < left + screenWidth && creature.getY() >= top && creature.getY() < top + screenHeight) {
                 terminal.write(creature.getGlyph(), creature.getX() - left, creature.getY() - top, creature.getColor());
             }
         }
+    }
+
+    /**
+     * Displays the messages in the specified list on the specified terminal. The messages are centered vertically in
+     * the terminal, starting at the bottom of the screen and working their way up. After the messages are displayed,
+     * the list is cleared.
+     *
+     * @param terminal the AsciiPanel on which to display the messages
+     * @param messages the list of messages to display
+     */
+    public void displayMessages(AsciiPanel terminal, List<String> messages) {
+        int top = screenHeight - messages.size();
+        for (int i = 0; i < messages.size(); i++) {
+            terminal.writeCenter(messages.get(i), top + i);
+        }
+        messages.clear();
     }
 
     @Override
@@ -165,4 +195,5 @@ public class PlayScreen implements Screen {
         world.updateCreatures();
         return this;
     }
+
 }

@@ -60,6 +60,9 @@ public class Creature {
     public void attack(Creature other) {
         int amount = Math.max(0, getAttackValue() - other.getAttackValue());
         amount = (int) (Math.random() * amount) + 1;
+
+        doAction("attack the '%s'for %d damage", other.glyph, amount);
+
         other.modifyHp(-amount);
     }
 
@@ -67,11 +70,76 @@ public class Creature {
         return attackValue;
     }
 
+    /**
+     * Performs an action within a radius around the creature, sending a message to all creatures affected by the
+     * action. The action message is displayed in second person for the player creature and in third person for other
+     * creatures.
+     *
+     * @param message the message to send to affected creatures
+     * @param params  any additional parameters to include in the message
+     */
+    public void doAction(String message, Object... params) {
+        int radius = 9;
+        for (int ox = -radius; ox < radius + 1; ox++) {
+            for (int oy = -radius; oy < radius + 1; oy++) {
+                // Check if the coordinates are within the radius
+                if (ox * ox + oy * oy > radius * radius) {
+                    continue;
+                }
+
+                // Get the creature at the current coordinates
+                Creature other = world.getCreature(x + ox, y + oy);
+
+                // If there's no creature at the current coordinates, continue to the next set of coordinates
+                if (other == null) {
+                    continue;
+                }
+
+                // Send the appropriate message to the affected creature(s)
+                if (other == this) {
+                    // If the affected creature is the same, as the one performaing the action, send the message
+                    other.notify("You " + message + ".", params);
+                } else {
+                    // If the affected creature is not the same as the one performing the action, send the message in second person
+                    other.notify(String.format("The '%s' %s.", glyph, makeSecondPerson(message)), params);
+                }
+            }
+        }
+    }
+
     public void modifyHp(int amount) {
         hp += amount;
         if (hp < 1) {
+            doAction("die");
             world.remove(this);
         }
+    }
+
+    /**
+     * Notifies the AI component with a formatted message and optional parameters.
+     *
+     * @param message the message to be formatted and passed to the AI component
+     * @param params  optional parameters to be included in the formatted message
+     */
+    public void notify(String message, Object... params) {
+        ai.onNotify(String.format(message, params));
+    }
+
+    /**
+     * Takes a String of text and modifies the first word by adding an "s" at the end to make it second person. The
+     * modified String is returned.
+     *
+     * @param text the text to be modified
+     * @return the modified text with the first word in second-person form
+     */
+    private String makeSecondPerson(String text) {
+        String[] words = text.split(" ", 2);
+        if (words.length < 2) {
+            return text;
+        }
+        String verb = words[0] + "s";
+        String rest = words[1];
+        return String.format("%s %s", verb, rest);
     }
 
     public int getMaxHp() {
@@ -146,6 +214,7 @@ public class Creature {
 
     public void dig(int wx, int wy) {
         world.dig(wx, wy);
+        doAction("dig field %d.%d", wx, wy);
     }
 
     /**
@@ -173,15 +242,7 @@ public class Creature {
         return (other == null || other == this);
     }
 
-    /**
-     * Notifies the AI component with a formatted message and optional parameters.
-     *
-     * @param message the message to be formatted and passed to the AI component
-     * @param params  optional parameters to be included in the formatted message
-     */
-    public void notify(String message, Object... params) {
-        ai.onNotify(String.format(message, params));
-    }
+
 }
 
 
