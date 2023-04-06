@@ -13,4 +13,7 @@ public class CreatureAi {
 
     public void onTakeTurn() {
     }
+
+    public void onNotify(String format) {
+    }
 }

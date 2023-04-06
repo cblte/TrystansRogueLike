@@ -7,13 +7,13 @@ public class Creature {
     private final World world;
     private final char glyph;
     private final Color color;
+    private final int maxHp;
+    private final int attackValue;
+    private final int defenseValue;
     private int x;
     private int y;
     private CreatureAi ai;
-    private int maxHp;
     private int hp;
-    private int attackValue;
-    private int defenseValue;
 
     /**
      * Creates a new creature with the specified attributes.
@@ -171,6 +171,16 @@ public class Creature {
         }
         Creature other = world.getCreature(wx, wy);
         return (other == null || other == this);
+    }
+
+    /**
+     * Notifies the AI component with a formatted message and optional parameters.
+     *
+     * @param message the message to be formatted and passed to the AI component
+     * @param params  optional parameters to be included in the formatted message
+     */
+    public void notify(String message, Object... params) {
+        ai.onNotify(String.format(message, params));
     }
 }
 

@@ -11,16 +11,20 @@ import net.zn80.trystansroguelike.World;
 import net.zn80.trystansroguelike.WorldBuilder;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayScreen implements Screen {
     private final int screenWidth;
     private final int screenHeight;
     private World world;
     private Creature player;
+    private List<String> messages;
 
     public PlayScreen() {
         this.screenWidth = 80;
         this.screenHeight = 21;
+        this.messages = new ArrayList<String>();
         createWorld();
 
         CreatureFactory creatureFactory = new CreatureFactory(world);
@@ -40,7 +44,8 @@ public class PlayScreen implements Screen {
      * @param creatureFactory The creature factory to use for creating the creatures.
      */
     private void createCreatures(CreatureFactory creatureFactory) {
-        player = creatureFactory.newPlayer();
+        player = creatureFactory.newPlayer(messages);
+        System.out.format("Player %c added at %d/%d%n", player.getGlyph(), player.getX(), player.getY());
 
         for (int i = 0; i < 8; i++) {
             Creature f = creatureFactory.newFungus();
