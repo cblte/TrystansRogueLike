@@ -10,6 +10,10 @@ public class Creature {
     private int x;
     private int y;
     private CreatureAi ai;
+    private int maxHp;
+    private int hp;
+    private int attackValue;
+    private int defenseValue;
 
     /**
      * Creates a new creature with the specified attributes.
@@ -18,10 +22,14 @@ public class Creature {
      * @param glyph the glyph representing the creature
      * @param color the color of the creature on the screen
      */
-    public Creature(World world, char glyph, Color color) {
+    public Creature(World world, char glyph, Color color, int maxHp, int attackValue, int defenseValue) {
         this.world = world;
         this.glyph = glyph;
         this.color = color;
+        this.maxHp = maxHp;
+        this.hp = maxHp;
+        this.attackValue = attackValue;
+        this.defenseValue = defenseValue;
     }
 
     /**
@@ -43,14 +51,39 @@ public class Creature {
         }
     }
 
-
     /**
      * Attacks the specified creature, removing it from the world.
      *
      * @param other the creature to attack and remove
+     * @return void
      */
     public void attack(Creature other) {
-        world.remove(other);
+        int amount = Math.max(0, getAttackValue() - other.getAttackValue());
+        amount = (int) (Math.random() * amount) + 1;
+        other.modifyHp(-amount);
+    }
+
+    public int getAttackValue() {
+        return attackValue;
+    }
+
+    public void modifyHp(int amount) {
+        hp += amount;
+        if (hp < 1) {
+            world.remove(this);
+        }
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public int getDefenseValue() {
+        return defenseValue;
     }
 
     /**

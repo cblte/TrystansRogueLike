@@ -61,7 +61,8 @@ public class PlayScreen implements Screen {
 
         terminal.write(player.getGlyph(), player.getX() - left, player.getY() - top, player.getColor());
 
-        terminal.writeCenter("--- press [escape] to loose or [enter] to continue ---", terminal.getHeightInCharacters() - 2);
+        String stats = String.format(" %3d/%3d hp", player.getHp(), player.getMaxHp());
+        terminal.write(stats, 1, 23);
     }
 
     /**
